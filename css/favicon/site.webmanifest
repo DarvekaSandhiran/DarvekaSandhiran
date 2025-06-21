@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "My VR App",
+    "short_name": "VRApp",
     "icons": [
         {
             "src": "/webxr/css/favicon/android-chrome-192x192.png",
@@ -14,6 +14,6 @@
         }
     ],
     "theme_color": "#ff0000",
-    "background_color": "#ff0000",
+    "background_color": "#000000",
     "display": "standalone"
 }
