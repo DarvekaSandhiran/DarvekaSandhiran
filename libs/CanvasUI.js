@@ -31,7 +31,7 @@ clipPath: svg path
 border: width color style
 */
 class CanvasUI{
-	constructor(content, config){
+    constructor(content, config){
         const defaultconfig = {
             panelSize: { width: 1, height: 1},
             width: 512,
@@ -46,7 +46,7 @@ class CanvasUI{
                 borderRadius: 6
             }
         }
-		this.config = (config===undefined) ? defaultconfig : config;
+        this.config = (config===undefined) ? defaultconfig : config;
         
         if (this.config.width === undefined) this.config.width = 512;
         if (this.config.height === undefined) this.config.height = 512;
@@ -88,12 +88,12 @@ class CanvasUI{
         this.context.save();
         
         const opacity = ( this.config.opacity !== undefined ) ? this.config.opacity : 0.7;
-		
+        
         const planeMaterial = new MeshBasicMaterial({ transparent: true, opacity });
         this.panelSize = ( this.config.panelSize !== undefined) ? this.config.panelSize : { width:1, height:1 }
-		const planeGeometry = new PlaneGeometry(this.panelSize.width, this.panelSize.height);
-		
-		this.mesh = new Mesh(planeGeometry, planeMaterial);
+        const planeGeometry = new PlaneGeometry(this.panelSize.width, this.panelSize.height);
+        
+        this.mesh = new Mesh(planeGeometry, planeMaterial);
         
         this.texture = new CanvasTexture(canvas);
         this.mesh.material.map = this.texture;
@@ -134,8 +134,86 @@ class CanvasUI{
         this.needsUpdate = true;
         
         this.update();
-	}
-	
+    }
+
+    // --- Gaming Room Background ---
+    drawGamingRoomBackground() {
+        const ctx = this.context;
+        const w = this.config.width;
+        const h = this.config.height;
+
+        // Wall gradient
+        const wallGradient = ctx.createLinearGradient(0, 0, 0, h);
+        wallGradient.addColorStop(0, "#23272e");
+        wallGradient.addColorStop(1, "#181a20");
+        ctx.fillStyle = wallGradient;
+        ctx.fillRect(0, 0, w, h);
+
+        // Floor
+        ctx.fillStyle = "#101217";
+        ctx.fillRect(0, h * 0.7, w, h * 0.3);
+
+        // Desk
+        ctx.fillStyle = "#3a2c1a";
+        ctx.fillRect(w * 0.18, h * 0.68, w * 0.64, h * 0.08);
+
+        // Monitor stand
+        ctx.fillStyle = "#222";
+        ctx.fillRect(w * 0.47, h * 0.62, w * 0.06, h * 0.06);
+
+        // Monitor bezel
+        ctx.fillStyle = "#111";
+        ctx.fillRect(w * 0.32, h * 0.32, w * 0.36, h * 0.32);
+
+        // Monitor screen
+        ctx.fillStyle = "#222e3c";
+        ctx.fillRect(w * 0.335, h * 0.345, w * 0.33, h * 0.27);
+
+        // RGB lights under monitor
+        const rgb = ctx.createLinearGradient(w * 0.32, h * 0.64, w * 0.68, h * 0.64);
+        rgb.addColorStop(0, "#00f6ff");
+        rgb.addColorStop(0.5, "#ff00ea");
+        rgb.addColorStop(1, "#00ff85");
+        ctx.fillStyle = rgb;
+        ctx.fillRect(w * 0.32, h * 0.64, w * 0.36, h * 0.01);
+
+        // Desktop tower
+        ctx.fillStyle = "#181a20";
+        ctx.fillRect(w * 0.7, h * 0.54, w * 0.09, h * 0.18);
+        // Tower glass panel
+        ctx.strokeStyle = "#00f6ff";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(w * 0.705, h * 0.545, w * 0.08, h * 0.17);
+        // RGB fans
+        for (let i = 0; i < 3; i++) {
+            ctx.beginPath();
+            ctx.arc(w * 0.75, h * (0.58 + i * 0.05), w * 0.025, 0, 2 * Math.PI);
+            ctx.strokeStyle = ["#00f6ff", "#ff00ea", "#00ff85"][i % 3];
+            ctx.lineWidth = 4;
+            ctx.stroke();
+        }
+
+        // Keyboard
+        ctx.fillStyle = "#23272e";
+        ctx.fillRect(w * 0.34, h * 0.76, w * 0.32, h * 0.025);
+        // Keyboard RGB
+        for (let i = 0; i < 10; i++) {
+            ctx.fillStyle = ["#00f6ff", "#ff00ea", "#00ff85", "#fff"][i % 4];
+            ctx.fillRect(w * (0.345 + i * 0.03), h * 0.782, w * 0.025, h * 0.008);
+        }
+
+        // Mouse
+        ctx.beginPath();
+        ctx.ellipse(w * 0.68, h * 0.79, w * 0.018, h * 0.012, 0, 0, 2 * Math.PI);
+        ctx.fillStyle = "#23272e";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(w * 0.68, h * 0.79, w * 0.008, 0, 2 * Math.PI);
+        ctx.fillStyle = "#00f6ff";
+        ctx.fill();
+    }
+    // --- End Gaming Room Background ---
+
     getIntersectY( index ){
         const height = this.config.height || 512;
         const intersect = this.intersects[index];
@@ -260,10 +338,7 @@ class CanvasUI{
                 context.rect( pos.x, pos.y, width, height );
                 context.clip();
             }
-            
-            
         }
-        
     }
 
     setPosition(x, y, z){
@@ -310,7 +385,6 @@ class CanvasUI{
             }
         });
         const elm = (elms.length==0) ? null : this.config[elms[0][0]];
-        //console.log(`selected = ${elm}`);
         return elm;
     }
 
@@ -336,7 +410,6 @@ class CanvasUI{
         }else{
             const x = uv.x * (this.config.width || 512);
             const y = (1 - uv.y) * (this.config.height || 512);
-            //console.log( `hover uv:${uv.x.toFixed(2)},${uv.y.toFixed(2)}>>texturePos:${x.toFixed(0)}, ${y.toFixed(0)}`);
             const elm = this.getElementAtLocation( x, y );
             if (elm===null){
                 if ( this.selectedElements[index] !== undefined ){
@@ -348,7 +421,6 @@ class CanvasUI{
                 this.needsUpdate = true;
             }
         }
-         
     }
     
     select( index = 0 ){
@@ -406,7 +478,7 @@ class CanvasUI{
         }
     }
     
-	update(){    
+    update(){    
         if (this.mesh===undefined) return;
             
         if ( this.controller ) this.handleController( this.controller, 0 );
@@ -415,18 +487,13 @@ class CanvasUI{
         if ( this.keyboard && this.keyboard.visible ) this.keyboard.update();
         
         if ( !this.needsUpdate ) return;
-		
-		let context = this.context;
-		
-		context.clearRect(0, 0, this.config.width, this.config.height);
         
-        const bgColor = ( this.config.body.backgroundColor ) ? this.config.body.backgroundColor : "#000";
-        const fontFamily = ( this.config.body.fontFamily ) ? this.config.body.fontFamily : "Arial";
-        const fontColor = ( this.config.body.fontColor ) ? this.config.body.fontColor : "#fff";
-        const fontSize = ( this.config.body.fontSize ) ? this.config.body.fontSize : 30;
-        this.setClip(this.config.body);
-        context.fillStyle = bgColor;
-        context.fillRect( 0, 0, this.config.width, this.config.height);
+        let context = this.context;
+        
+        context.clearRect(0, 0, this.config.width, this.config.height);
+
+        // Draw gaming room background
+        this.drawGamingRoomBackground();
         
         const self = this;
         
@@ -492,7 +559,6 @@ class CanvasUI{
                 }else if (config.type == "img"){
                     if (config.img === undefined){
                         this.loadImage(content).then(img =>{
-                            console.log(`w: ${img.width} | h: ${img.height}`);
                             config.img = img;
                             self.needsUpdate = true;
                             self.update();           
@@ -505,11 +571,11 @@ class CanvasUI{
                 }
             }
         })
-		
+        
         this.needsUpdate = false;
-		this.texture.needsUpdate = true;
-	}
-	
+        this.texture.needsUpdate = true;
+    }
+    
     loadImage(src) {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -519,13 +585,13 @@ class CanvasUI{
       });
     }
 
-	createOffscreenCanvas(w, h) {
-		const canvas = document.createElement('canvas');
-		canvas.width = w;
-		canvas.height = h;
-		return canvas;
-	}
-	
+    createOffscreenCanvas(w, h) {
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        return canvas;
+    }
+    
     fillRoundedRect( x, y, w, h, radius ){
         const ctx = this.context;
         ctx.beginPath();
@@ -590,11 +656,10 @@ class CanvasUI{
         this.mesh.quaternion.copy( value );
     }
     
-	wrapText(name, txt){
-        //console.log( `wrapText: ${name}:${txt}`);
-		const words = txt.split(' ');
+    wrapText(name, txt){
+        const words = txt.split(' ');
         let line = '';
-		const lines = [];
+        const lines = [];
         const config = (this.config[name]!==undefined) ? this.config[name] : this.config.body;
         const width = (config.width!==undefined) ? config.width : this.config.width;
         const height = (config.height!==undefined) ? config.height : this.config.height;
@@ -609,18 +674,18 @@ class CanvasUI{
         const fontSize = (config.fontSize !== undefined ) ? config.fontSize : ( this.config.body.fontSize !== undefined) ? this.config.body.fontSize : 30;
         const fontFamily = (config.fontFamily!==undefined) ? config.fontFamily : (this.config.body.fontFamily!==undefined) ? this.config.body.fontFamily : 'Arial';
         const leading = (config.leading !== undefined) ? config.leading : (this.config.body.leading !== undefined) ? this.config.body.leading : 8;
-		const lineHeight = fontSize + leading;
+        const lineHeight = fontSize + leading;
         
         const context = this.context;
         
         context.textAlign = textAlign;
         
-		context.font = `${fontSize}px '${fontFamily}'`;
-		
+        context.font = `${fontSize}px '${fontFamily}'`;
+        
         words.forEach( function(word){
-			let testLine = (words.length>1) ? `${line}${word} ` : word;
-        	let metrics = context.measureText(testLine);
-        	if (metrics.width > rect.width && word.length>1) {
+            let testLine = (words.length>1) ? `${line}${word} ` : word;
+            let metrics = context.measureText(testLine);
+            if (metrics.width > rect.width && word.length>1) {
                 if (line.length==0 && metrics.width > rect.width){
                     //word too long
                     while(metrics.width > rect.width){
@@ -639,15 +704,15 @@ class CanvasUI{
                     }
                     if (word != "") lines.push(word);
                 }else{
-				    lines.push(line);
-				    line = `${word} `;
+                    lines.push(line);
+                    line = `${word} `;
                 }
-			}else {
-				line = testLine;
-			}
-		});
-		
-		if (line != '') lines.push(line);
+            }else {
+                line = testLine;
+            }
+        });
+        
+        if (line != '') lines.push(line);
         
         const textHeight = lines.length * lineHeight;
         let scrollY = 0;
@@ -667,9 +732,9 @@ class CanvasUI{
             scrollY = config.scrollY;
             config.minScrollY = rect.height - textHeight;
         }
-		
-		let y = scrollY + rect.y + fontSize/2;
-		let x;
+        
+        let y = scrollY + rect.y + fontSize/2;
+        let x;
         
         switch( textAlign ){
             case "center":
@@ -683,12 +748,11 @@ class CanvasUI{
                 break;
         }
         
-		lines.forEach( (line) => {
+        lines.forEach( (line) => {
             if ((y + lineHeight) > 0) context.fillText(line, x, y);
-			y += lineHeight;
-		});
-	}
+            y += lineHeight;
+        });
+    }
 }
 
 export { CanvasUI };
-
