@@ -689,5 +689,5 @@ class CanvasUI{
 		});
 	}
 }
-
+}
 export { CanvasUI };
