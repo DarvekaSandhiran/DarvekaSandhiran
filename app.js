@@ -112,6 +112,7 @@ class App{
 				
 				college.traverse(function (child) {
     if (child.isMesh){
+	     console.log("🔎 Mesh found:", child.name);
         if (child.name.indexOf("PROXY")!=-1){
             child.material.visible = false;
             self.proxy = child;
