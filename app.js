@@ -131,6 +131,7 @@ class App{
                 roughness: 0.9,
                 metalness: 0.05
             });
+		 console.log(`✅ Floor color changed for: ${child.name}`);
         }
     }
 });
