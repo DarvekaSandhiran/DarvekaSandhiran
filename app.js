@@ -1,4 +1,4 @@
-
+where is loadCollege() i need to chnagew in app.js 
 import * as THREE from './libs/three/three.module.js';
 import { GLTFLoader } from './libs/three/jsm/GLTFLoader.js';
 import { DRACOLoader } from './libs/three/jsm/DRACOLoader.js';
@@ -111,31 +111,21 @@ class App{
 				self.scene.add( college );
 				
 				college.traverse(function (child) {
-    if (child.isMesh){
-	     console.log("🔎 Mesh found:", child.name);
-        if (child.name.indexOf("PROXY")!=-1){
-            child.material.visible = false;
-            self.proxy = child;
-        } else if (child.material.name.indexOf('Glass')!=-1){
-            child.material.opacity = 0.1;
-            child.material.transparent = true;
-        } else if (child.material.name.indexOf("SkyBox")!=-1){
-            const mat1 = child.material;
-            const mat2 = new THREE.MeshBasicMaterial({map: mat1.map});
-            child.material = mat2;
-            mat1.dispose();
-        }
-					 // ✅ Change floor color here
-        if (child.name.toLowerCase().includes("floor")) {
-            child.material = new THREE.MeshStandardMaterial({
-                color: 0x2e8b57, // sea green
-                roughness: 0.9,
-                metalness: 0.05
-            });
-		 console.log(`✅ Floor color changed for: ${child.name}`);
-        }
-    }
-});
+    				if (child.isMesh){
+						if (child.name.indexOf("PROXY")!=-1){
+							child.material.visible = false;
+							self.proxy = child;
+						}else if (child.material.name.indexOf('Glass')!=-1){
+                            child.material.opacity = 0.1;
+                            child.material.transparent = true;
+                        }else if (child.material.name.indexOf("SkyBox")!=-1){
+                            const mat1 = child.material;
+                            const mat2 = new THREE.MeshBasicMaterial({map: mat1.map});
+                            child.material = mat2;
+                            mat1.dispose();
+                        }
+					}
+				});
                        
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
