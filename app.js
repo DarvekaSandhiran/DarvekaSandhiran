@@ -90,69 +90,87 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
     
-	loadCollege(){
-        
-		const loader = new GLTFLoader( ).setPath(this.assetsPath);
-        const dracoLoader = new DRACOLoader();
-        dracoLoader.setDecoderPath( './libs/three/js/draco/' );
-        loader.setDRACOLoader( dracoLoader );
-        
-        const self = this;
-		
-		// Load a glTF resource
-		loader.load(
-			// resource URL
-			'college.glb',
-			// called when the resource is loaded
-			function ( gltf ) {
+	loadCollege() {
+    const loader = new GLTFLoader().setPath(this.assetsPath);
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('./libs/three/js/draco/');
+    loader.setDRACOLoader(dracoLoader);
 
-                const college = gltf.scene.children[0];
-				self.scene.add( college );
-				
-				college.traverse(function (child) {
-    				if (child.isMesh){
-						if (child.name.indexOf("PROXY")!=-1){
-							child.material.visible = false;
-							self.proxy = child;
-						}else if (child.material.name.indexOf('Glass')!=-1){
-                            child.material.opacity = 0.1;
-                            child.material.transparent = true;
-                        }else if (child.material.name.indexOf("SkyBox")!=-1){
-                            const mat1 = child.material;
-                            const mat2 = new THREE.MeshBasicMaterial({map: mat1.map});
-                            child.material = mat2;
-                            mat1.dispose();
-                        }
-					}
-				});
-                       
-                const door1 = college.getObjectByName("LobbyShop_Door__1_");
-                const door2 = college.getObjectByName("LobbyShop_Door__2_");
-                const pos = door1.position.clone().sub(door2.position).multiplyScalar(0.5).add(door2.position);
-                const obj = new THREE.Object3D();
-                obj.name = "LobbyShop";
-                obj.position.copy(pos);
-                college.add( obj );
-                
-                self.loadingBar.visible = false;
-			
-                self.setupXR();
-			},
-			// called while loading is progressing
-			function ( xhr ) {
+    const self = this;
 
-				self.loadingBar.progress = (xhr.loaded / xhr.total);
-				
-			},
-			// called when loading has errors
-			function ( error ) {
+    loader.load(
+        'college.glb',
+        function (gltf) {
+            const college = gltf.scene.children[0];
+            self.scene.add(college);
 
-				console.log( 'An error happened' );
+            college.traverse(function (child) {
+                if (child.isMesh) {
+                    // Hide proxy
+                    if (child.name.indexOf("PROXY") !== -1) {
+                        child.material.visible = false;
+                        self.proxy = child;
 
-			}
-		);
-	}
-    
+                    // Handle glass
+                    } else if (child.material.name.indexOf('Glass') !== -1) {
+                        child.material.opacity = 0.1;
+                        child.material.transparent = true;
+
+                    // Replace skybox with basic material
+                    } else if (child.material.name.indexOf("SkyBox") !== -1) {
+                        const mat1 = child.material;
+                        const mat2 = new THREE.MeshBasicMaterial({ map: mat1.map });
+                        child.material = mat2;
+                        mat1.dispose();
+                    }
+
+                    // 🚫 Hide "BoltonCollege" text
+                    if (child.name === "BoltonCollege") {
+                        child.visible = false;
+                    }
+                }
+            });
+
+            // Calculate midpoint between doors
+            const door1 = college.getObjectByName("LobbyShop_Door__1_");
+            const door2 = college.getObjectByName("LobbyShop_Door__2_");
+            const pos = door1.position.clone().sub(door2.position).multiplyScalar(0.5).add(door2.position);
+            const obj = new THREE.Object3D();
+            obj.name = "LobbyShop";
+            obj.position.copy(pos);
+            college.add(obj);
+
+            // ✅ Add custom 3D text: "Darvecka College"
+            const fontLoader = new FontLoader();
+            fontLoader.load('./libs/fonts/helvetiker_regular.typeface.json', (font) => {
+                const textGeo = new TextGeometry('Darvecka College', {
+                    font: font,
+                    size: 0.4,
+                    height: 0.05,
+                });
+
+                const textMat = new THREE.MeshStandardMaterial({ color: 0xff9900 });
+                const textMesh = new THREE.Mesh(textGeo, textMat);
+
+                textGeo.computeBoundingBox();
+                const textWidth = textGeo.boundingBox.max.x - textGeo.boundingBox.min.x;
+
+                textMesh.position.set(pos.x - textWidth / 2, pos.y + 2, pos.z); // vertical position = pos.y + 2
+                self.scene.add(textMesh);
+            });
+
+            self.loadingBar.visible = false;
+
+            self.setupXR();
+        },
+        function (xhr) {
+            self.loadingBar.progress = (xhr.loaded / xhr.total);
+        },
+        function (error) {
+            console.log('An error happened');
+        }
+    );
+}
     setupXR(){
         this.renderer.xr.enabled = true;
 
