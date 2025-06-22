@@ -72,7 +72,7 @@ class VRButton {
             self.renderer.xr.setSession(session);
             self.stylizeElement(button, false, 14, true);
 
-            button.textContent = 'EXIT GAMING ROOM';
+            button.textContent = 'EXIT VR ROOM';
             currentSession = session;
 
             if (self.onSessionStart !== undefined) self.onSessionStart();
@@ -82,7 +82,7 @@ class VRButton {
             currentSession.removeEventListener('end', onSessionEnded);
 
             self.stylizeElement(button, true, 14, true);
-            button.textContent = 'ENTER GAMING ROOM';
+            button.textContent = 'ENTER VR ROOM';
 
             currentSession = null;
             if (self.onSessionEnd !== undefined) self.onSessionEnd();
@@ -95,7 +95,7 @@ class VRButton {
         button.innerHTML = '🎮 VR ROOM';
 
         button.onmouseenter = function () {
-            button.textContent = (currentSession === null) ? 'ENTER GAMING ROOM' : 'EXIT GAMING ROOM';
+            button.textContent = (currentSession === null) ? 'ENTER VR ROOM' : 'EXIT VR ROOM';
             button.style.opacity = '1.0';
             button.style.boxShadow = '0 0 20px #0ff, 0 0 40px #0ff inset';
             button.style.transform = 'scale(1.05)';
