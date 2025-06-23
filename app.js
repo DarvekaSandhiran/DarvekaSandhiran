@@ -27,7 +27,7 @@ class App{
         
 		this.scene = new THREE.Scene();
         this.scene.add( this.dolly );
-       // this.scene.fog = new THREE.Fog(0xeeeeee, 20, 100); 
+       this.scene.fog = new THREE.Fog(0xeeeeee, 20, 100); 
 		const ambient = new THREE.HemisphereLight(0xFFD700, 0xAAAAAA, 0.8);
 		this.scene.add(ambient);
 
@@ -73,7 +73,7 @@ class App{
     
     const self = this;
     
-    loader.load( './assets/hdr/rogland_clear_night_2k.hdr', ( texture ) => {
+    loader.load( './assets/hdr/venice_sunset_1k.hdr', ( texture ) => {
         const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
         pmremGenerator.dispose();
 
