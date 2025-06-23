@@ -128,6 +128,18 @@ class App{
                        
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
+
+
+                // 🔴 Change door color to red
+if (door1 && door1.material) {
+    door1.material = door1.material.clone();
+    door1.material.color.set(0xff0000);
+}
+if (door2 && door2.material) {
+    door2.material = door2.material.clone();
+    door2.material.color.set(0xff0000);
+}
+				
                 const pos = door1.position.clone().sub(door2.position).multiplyScalar(0.5).add(door2.position);
                 const obj = new THREE.Object3D();
                 obj.name = "LobbyShop";
