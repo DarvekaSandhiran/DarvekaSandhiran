@@ -20,7 +20,7 @@ class App{
 		this.camera.position.set( 0, 1.6, 0 );
         
         this.dolly = new THREE.Object3D(  );
-       this.dolly.position.set(50, 20, -30); // Far right, high up, and far back
+      this.dolly.position.set(5, 0, 2);
         this.dolly.add( this.camera );
         this.dummyCam = new THREE.Object3D();
         this.camera.add( this.dummyCam );
