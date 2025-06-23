@@ -128,7 +128,15 @@ class App{
                        
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
-		
+		[door1, door2].forEach(door => {
+    if (door) {
+        door.traverse(child => {
+            if (child.isMesh && child.material && child.material.color) {
+                child.material.color.set(0x2196f3); // Example: blue, change to your desired color
+            }
+        });
+    }
+});
                 const pos = door1.position.clone().sub(door2.position).multiplyScalar(0.5).add(door2.position);
                 const obj = new THREE.Object3D();
                 obj.name = "LobbyShop";
