@@ -67,22 +67,23 @@ class App{
 	}
 	
     setEnvironment(){
-        const loader = new RGBELoader().setDataType( THREE.UnsignedByteType );
-        const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-        pmremGenerator.compileEquirectangularShader();
-        
-        const self = this;
-        
-        loader.load( './assets/hdr/rogland_clear_night_2k.hdr', ( texture ) => {
-          const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
-          pmremGenerator.dispose();
+    const loader = new RGBELoader().setDataType( THREE.UnsignedByteType );
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    pmremGenerator.compileEquirectangularShader();
+    
+    const self = this;
+    
+    loader.load( './assets/hdr/rogland_clear_night_2k.hdr', ( texture ) => {
+        const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
+        pmremGenerator.dispose();
 
-          self.scene.environment = envMap;
+        self.scene.environment = envMap;
+        self.scene.background = envMap; // <-- Add this line
 
-        }, undefined, (err)=>{
-            console.error( 'An error occurred setting the environment');
-        } );
-    }
+    }, undefined, (err)=>{
+        console.error( 'An error occurred setting the environment');
+    } );
+}
     
     resize(){
         this.camera.aspect = window.innerWidth / window.innerHeight;
