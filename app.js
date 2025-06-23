@@ -128,21 +128,7 @@ class App{
                        
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
-
-
-const redMaterial = new THREE.MeshStandardMaterial({
-    color: 0xff0000,
-    metalness: 0,
-    roughness: 1,
-    side: THREE.DoubleSide
-});
-
-if (door1 && door1.isMesh) {
-    door1.material = redMaterial.clone();
-}
-if (door2 && door2.isMesh) {
-    door2.material = redMaterial.clone();
-}			
+		
                 const pos = door1.position.clone().sub(door2.position).multiplyScalar(0.5).add(door2.position);
                 const obj = new THREE.Object3D();
                 obj.name = "LobbyShop";
