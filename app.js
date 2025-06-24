@@ -91,28 +91,10 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
 	loadCollege(){
-     const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
+const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
 spongebobTexture.flipY = false;
 spongebobTexture.wrapS = THREE.ClampToEdgeWrapping;
 spongebobTexture.wrapT = THREE.ClampToEdgeWrapping;
-
-// Calculate repeat to preserve aspect ratio (assuming wall UVs go from 0 to 1)
-const wallAspect = 1; // Change this to your wall's aspect ratio (width/height in world units)
-const imageAspect = 330 / 236;
-
-let repeatX = 1;
-let repeatY = 1;
-
-if (imageAspect > wallAspect) {
-    // Image is wider than wall, fit width
-    repeatY = wallAspect / imageAspect;
-} else {
-    // Image is taller than wall, fit height
-    repeatX = imageAspect / wallAspect;
-}
-
-spongebobTexture.repeat.set(repeatX, repeatY);
-spongebobTexture.offset.set((1 - repeatX) / 2, (1 - repeatY) / 2);
 			
 	const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
@@ -134,13 +116,27 @@ spongebobTexture.offset.set((1 - repeatX) / 2, (1 - repeatY) / 2);
     if (child.isMesh){
     console.log(child.name);
     if (child.name === "BoltonCollege_SecretWall") {
-        // Log wall size and aspect ratio
+        // Get wall size and aspect ratio
         const box = new THREE.Box3().setFromObject(child);
         const size = new THREE.Vector3();
         box.getSize(size);
-        console.log('Wall size:', size); // size.x = width, size.y = height, size.z = depth
-        const aspect = size.x / size.y;
-        console.log('Wall aspect ratio (width/height):', aspect);
+        const wallWidth = size.z; // z is width
+        const wallHeight = size.y; // y is height
+        const wallAspect = wallWidth / wallHeight;
+        const imageAspect = 330 / 236;
+
+        // Calculate repeat to preserve image aspect ratio
+        let repeatX = 1;
+        let repeatY = 1;
+        if (imageAspect > wallAspect) {
+            // Image is wider than wall, fit width
+            repeatY = wallAspect / imageAspect;
+        } else {
+            // Image is taller than wall, fit height
+            repeatX = imageAspect / wallAspect;
+        }
+        spongebobTexture.repeat.set(repeatX, repeatY);
+        spongebobTexture.offset.set((1 - repeatX) / 2, (1 - repeatY) / 2);
 
         child.material.color.set(0xffffff);
         child.material.map = spongebobTexture;
