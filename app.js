@@ -73,7 +73,7 @@ class App{
 
     const self = this;
 
-    loader.load( './assets/hdr/klippad_sunrise_2_1k.hdr', ( texture ) => {
+    loader.load( './assets/hdr/klippad_sunrise_2_4k.hdr', ( texture ) => {
         const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
         pmremGenerator.dispose();
 
