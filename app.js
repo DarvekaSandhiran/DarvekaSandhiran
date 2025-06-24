@@ -30,8 +30,6 @@ function createDarvekaTexture() {
 }
 
 const darvekaTexture = createDarvekaTexture();
-
-const spongebobTexture = createSpongeBobTexture();
 class App{
 	constructor(){
 		const container = document.createElement( 'div' );
