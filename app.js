@@ -92,7 +92,13 @@ class App{
     }
 	loadCollege(){
         const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
-		const loader = new GLTFLoader( ).setPath(this.assetsPath);
+	spongebobTexture.wrapS = THREE.RepeatWrapping;
+	spongebobTexture.wrapT = THREE.RepeatWrapping;	
+
+       const aspect = 330 / 236;
+       spongebobTexture.repeat.set(aspect, 1); // This will keep the image's aspect ratio
+		
+	const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath( './libs/three/js/draco/' );
         loader.setDRACOLoader( dracoLoader );
@@ -112,10 +118,10 @@ class App{
     if (child.isMesh){
         console.log(child.name);
 	    if (child.name === "BoltonCollege_SecretWall") {
-	    child.material.color.set(0xffffff); // Ensure the texture is not tinted
-            child.material.map = spongebobTexture;
-            child.material.needsUpdate = true;
-        }
+        child.material.color.set(0xffffff);
+        child.material.map = spongebobTexture;
+        child.material.needsUpdate = true;
+    }
         if (child.name.indexOf("PROXY")!=-1){
             child.material.visible = false;
             self.proxy = child;
