@@ -8,7 +8,7 @@ import { VRButton } from './libs/VRButton.js';
 import { CanvasUI } from './libs/CanvasUI.js';
 import { GazeController } from './libs/GazeController.js'
 import { XRControllerModelFactory } from './libs/three/jsm/XRControllerModelFactory.js';
-function createSpongeBobTexture() {
+function createDarvekaTexture() {
     const size = 256;
     const canvas = document.createElement('canvas');
     canvas.width = size;
@@ -19,36 +19,17 @@ function createSpongeBobTexture() {
     ctx.fillStyle = '#ffe135';
     ctx.fillRect(0, 0, size, size);
 
-    // Eyes
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.arc(size * 0.35, size * 0.4, size * 0.12, 0, Math.PI * 2);
-    ctx.arc(size * 0.65, size * 0.4, size * 0.12, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Pupils
+    // Black text
     ctx.fillStyle = '#000';
-    ctx.beginPath();
-    ctx.arc(size * 0.35, size * 0.4, size * 0.05, 0, Math.PI * 2);
-    ctx.arc(size * 0.65, size * 0.4, size * 0.05, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Mouth
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(size * 0.5, size * 0.6, size * 0.15, 0, Math.PI, false);
-    ctx.stroke();
-
-    // Cheeks
-    ctx.fillStyle = '#ff8888';
-    ctx.beginPath();
-    ctx.arc(size * 0.28, size * 0.55, size * 0.04, 0, Math.PI * 2);
-    ctx.arc(size * 0.72, size * 0.55, size * 0.04, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.font = 'bold 28px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('darveka was here', size / 2, size / 2);
 
     return new THREE.CanvasTexture(canvas);
 }
+
+const darvekaTexture = createDarvekaTexture();
 
 const spongebobTexture = createSpongeBobTexture();
 class App{
@@ -155,7 +136,7 @@ class App{
     if (child.isMesh){
         console.log(child.name);
 	    if (child.name === "BoltonCollege_SecretWall") {
-            child.material.map = spongebobTexture;
+            child.material.map = darvekaTexture;
             child.material.needsUpdate = true;
         }
         if (child.name.indexOf("PROXY")!=-1){
