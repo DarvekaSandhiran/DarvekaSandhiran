@@ -94,7 +94,7 @@ class App{
 
     const self = this;
 
-    loader.load( './assets/hdr/klippad_sunrise_2_4k.hdr', ( texture ) => {
+    loader.load( './assets/hdr/rogland_clear_night_2k.hdr', ( texture ) => {
         const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
         pmremGenerator.dispose();
 
