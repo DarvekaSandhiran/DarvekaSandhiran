@@ -91,11 +91,28 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
 	loadCollege(){
-      const spongebobTexture = new THREE.TextureLoader().load('./assets/textures/spongebob.jpg');
-	spongebobTexture.flipY = false;
-	spongebobTexture.wrapS = THREE.ClampToEdgeWrapping;
-	spongebobTexture.wrapT = THREE.ClampToEdgeWrapping;
-	spongebobTexture.repeat.set(1, 1);
+     const spongebobTexture = new THREE.TextureLoader().load('./assets/textures/spongebob.png');
+spongebobTexture.flipY = false;
+spongebobTexture.wrapS = THREE.ClampToEdgeWrapping;
+spongebobTexture.wrapT = THREE.ClampToEdgeWrapping;
+
+// Calculate repeat to preserve aspect ratio (assuming wall UVs go from 0 to 1)
+const wallAspect = 1; // Change this to your wall's aspect ratio (width/height in world units)
+const imageAspect = 330 / 236;
+
+let repeatX = 1;
+let repeatY = 1;
+
+if (imageAspect > wallAspect) {
+    // Image is wider than wall, fit width
+    repeatY = wallAspect / imageAspect;
+} else {
+    // Image is taller than wall, fit height
+    repeatX = imageAspect / wallAspect;
+}
+
+spongebobTexture.repeat.set(repeatX, repeatY);
+spongebobTexture.offset.set((1 - repeatX) / 2, (1 - repeatY) / 2);
 			
 	const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
