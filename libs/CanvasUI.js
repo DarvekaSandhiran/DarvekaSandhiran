@@ -31,22 +31,63 @@ clipPath: svg path
 border: width color style
 */
 class CanvasUI{
-	constructor(content, config){
+    constructor(content, config){
         const defaultconfig = {
-            panelSize: { width: 1, height: 1},
-            width: 512,
-            height: 512,
-            opacity: 0.7,
+            panelSize: { width: 1.2, height: 0.7 },
+            width: 700,
+            height: 350,
+            opacity: 0.95,
             body:{
-                fontFamily:'Arial', 
-                fontSize:30, 
-                padding:20, 
-                backgroundColor: '#000', 
-                fontColor:'#fff', 
-                borderRadius: 6
+                fontFamily:'Roboto, Arial, sans-serif',
+                fontSize:28,
+                padding:32,
+                backgroundColor: '#f7f7fa',
+                fontColor:'#222',
+                borderRadius: 18,
+                textAlign: 'center'
+            },
+            name: {
+                fontSize: 44,
+                fontFamily: 'Roboto, Arial, sans-serif',
+                fontColor: '#222',
+                backgroundColor: '#fff',
+                borderRadius: 14,
+                padding: 18,
+                width: 620,
+                height: 60,
+                position: { x: 40, y: 32 },
+                textAlign: 'center',
+                type: 'text'
+            },
+            info: {
+                fontSize: 24,
+                fontFamily: 'Roboto, Arial, sans-serif',
+                fontColor: '#555',
+                backgroundColor: '#e9ecef',
+                borderRadius: 12,
+                padding: 16,
+                width: 620,
+                height: 120,
+                position: { x: 40, y: 110 },
+                textAlign: 'left',
+                overflow: 'scroll',
+                type: 'text'
+            },
+            actionButton: {
+                type: 'button',
+                fontFamily: 'Roboto, Arial, sans-serif',
+                fontSize: 28,
+                fontColor: '#fff',
+                backgroundColor: '#007bff',
+                hover: '#0056b3',
+                borderRadius: 12,
+                width: 220,
+                height: 54,
+                position: { x: 240, y: 260 },
+                textAlign: 'center'
             }
         }
-		this.config = (config===undefined) ? defaultconfig : config;
+        this.config = (config===undefined) ? defaultconfig : config;
         
         if (this.config.width === undefined) this.config.width = 512;
         if (this.config.height === undefined) this.config.height = 512;
