@@ -113,13 +113,6 @@ class App{
 				college.traverse(function (child) {
     if (child.isMesh){
         console.log(child.name);
-
-        // Rename BoltonCollege_PROXY to NewCollegeName
-        if (child.name === "BoltonCollege_PROXY") {
-            child.name = "NewCollegeName"; // Change to your desired name
-            console.log("Renamed mesh to:", child.name);
-        }
-
         if (child.name.indexOf("PROXY")!=-1){
             child.material.visible = false;
             self.proxy = child;
