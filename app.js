@@ -113,6 +113,20 @@ class App{
 				college.traverse(function (child) {
     if (child.isMesh){
         console.log(child.name);
+
+        // Highlight or isolate BoltonCollege_SecretWall
+        if (child.name === "BoltonCollege_SecretWall") {
+            // Highlight: change color to bright green (if material supports it)
+            if (child.material.color) {
+                child.material.color.set(0x00ff00);
+            }
+            // Or, to isolate, uncomment the next line:
+            // child.visible = true;
+        } else {
+            // To isolate, uncomment the next line to hide all other meshes:
+            // child.visible = false;
+        }
+
         if (child.name.indexOf("PROXY")!=-1){
             child.material.visible = false;
             self.proxy = child;
@@ -124,8 +138,7 @@ class App{
             child.visible = false;
         }
     }
-});
-                       
+});                  
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
 		
