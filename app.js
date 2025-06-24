@@ -132,23 +132,31 @@ spongebobTexture.offset.set((1 - repeatX) / 2, (1 - repeatY) / 2);
 				self.scene.add( college );
 				college.traverse(function (child) {
     if (child.isMesh){
-        console.log(child.name);
-	     if (child.name === "BoltonCollege_SecretWall") {
+    console.log(child.name);
+    if (child.name === "BoltonCollege_SecretWall") {
+        // Log wall size and aspect ratio
+        const box = new THREE.Box3().setFromObject(child);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        console.log('Wall size:', size); // size.x = width, size.y = height, size.z = depth
+        const aspect = size.x / size.y;
+        console.log('Wall aspect ratio (width/height):', aspect);
+
         child.material.color.set(0xffffff);
         child.material.map = spongebobTexture;
         child.material.needsUpdate = true;
     }
-        if (child.name.indexOf("PROXY")!=-1){
-            child.material.visible = false;
-            self.proxy = child;
-        }else if (child.material.name.indexOf('Glass')!=-1){
-            child.material.opacity = 0.1;
-            child.material.transparent = true;
-        }else if (child.material.name.indexOf("SkyBox")!=-1){
-            // Hide the skybox mesh so the HDRI background is visible
-            child.visible = false;
-        }
+    if (child.name.indexOf("PROXY")!=-1){
+        child.material.visible = false;
+        self.proxy = child;
+    }else if (child.material.name.indexOf('Glass')!=-1){
+        child.material.opacity = 0.1;
+        child.material.transparent = true;
+    }else if (child.material.name.indexOf("SkyBox")!=-1){
+        // Hide the skybox mesh so the HDRI background is visible
+        child.visible = false;
     }
+}
 });                  
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
