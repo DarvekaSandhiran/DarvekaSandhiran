@@ -94,9 +94,8 @@ class App{
         const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
 	spongebobTexture.wrapS = THREE.RepeatWrapping;
 	spongebobTexture.wrapT = THREE.RepeatWrapping;	
+        spongebobTexture.repeat.set(4, 4);
 
-       const aspect = 330 / 236;
-       spongebobTexture.repeat.set(aspect, 1); // This will keep the image's aspect ratio
 		
 	const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
