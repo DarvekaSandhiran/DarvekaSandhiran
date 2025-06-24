@@ -92,10 +92,10 @@ class App{
     }
 	loadCollege(){
         const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
-	spongebobTexture.wrapS = THREE.RepeatWrapping;
-	spongebobTexture.wrapT = THREE.RepeatWrapping;
-        spongebobTexture.flipY = false;
-        spongebobTexture.repeat.set(8, 8);
+	spongebobTexture.flipY = false;
+	spongebobTexture.wrapS = THREE.ClampToEdgeWrapping;
+	spongebobTexture.wrapT = THREE.ClampToEdgeWrapping;
+	spongebobTexture.repeat.set(1, 1);
 
 		
 	const loader = new GLTFLoader( ).setPath(this.assetsPath);
@@ -117,7 +117,7 @@ class App{
 				college.traverse(function (child) {
     if (child.isMesh){
         console.log(child.name);
-	    if (child.name === "BoltonCollege_SecretWall") {
+	     if (child.name === "BoltonCollege_SecretWall") {
         child.material.color.set(0xffffff);
         child.material.map = spongebobTexture;
         child.material.needsUpdate = true;
