@@ -91,7 +91,7 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
 	loadCollege(){
-        const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.jpg');
+        const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
 		const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath( './libs/three/js/draco/' );
