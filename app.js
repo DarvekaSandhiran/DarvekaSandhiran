@@ -16,7 +16,7 @@ function createDarvekaTexture() {
     const ctx = canvas.getContext('2d');
 
     // Yellow background
-    ctx.fillStyle = '#ffe135';
+    ctx.fillStyle = '#00ff00';
     ctx.fillRect(0, 0, size, size);
 
     // Black text
