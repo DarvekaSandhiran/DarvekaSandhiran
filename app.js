@@ -91,7 +91,7 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
 	loadCollege(){
-     const spongebobTexture = new THREE.TextureLoader().load('./assets/textures/spongebob.png');
+     const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
 spongebobTexture.flipY = false;
 spongebobTexture.wrapS = THREE.ClampToEdgeWrapping;
 spongebobTexture.wrapT = THREE.ClampToEdgeWrapping;
