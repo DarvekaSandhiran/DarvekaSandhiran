@@ -93,8 +93,9 @@ class App{
 	loadCollege(){
         const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.png');
 	spongebobTexture.wrapS = THREE.RepeatWrapping;
-	spongebobTexture.wrapT = THREE.RepeatWrapping;	
-        spongebobTexture.repeat.set(4, 4);
+	spongebobTexture.wrapT = THREE.RepeatWrapping;
+        spongebobTexture.flipY = false;
+        spongebobTexture.repeat.set(8, 8);
 
 		
 	const loader = new GLTFLoader( ).setPath(this.assetsPath);
