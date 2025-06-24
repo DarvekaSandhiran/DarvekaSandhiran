@@ -112,21 +112,19 @@ class App{
 				self.scene.add( college );
 				
 				college.traverse(function (child) {
-    				if (child.isMesh){
-						if (child.name.indexOf("PROXY")!=-1){
-							child.material.visible = false;
-							self.proxy = child;
-						}else if (child.material.name.indexOf('Glass')!=-1){
-                            child.material.opacity = 0.1;
-                            child.material.transparent = true;
-                        }else if (child.material.name.indexOf("SkyBox")!=-1){
-                            const mat1 = child.material;
-                            const mat2 = new THREE.MeshBasicMaterial({map: mat1.map});
-                            child.material = mat2;
-                            mat1.dispose();
-                        }
-					}
-				});
+    if (child.isMesh){
+        if (child.name.indexOf("PROXY")!=-1){
+            child.material.visible = false;
+            self.proxy = child;
+        }else if (child.material.name.indexOf('Glass')!=-1){
+            child.material.opacity = 0.1;
+            child.material.transparent = true;
+        }else if (child.material.name.indexOf("SkyBox")!=-1){
+            // Hide the skybox mesh so the HDRI background is visible
+            child.visible = false;
+        }
+    }
+});
                        
                 const door1 = college.getObjectByName("LobbyShop_Door__1_");
                 const door2 = college.getObjectByName("LobbyShop_Door__2_");
