@@ -8,28 +8,6 @@ import { VRButton } from './libs/VRButton.js';
 import { CanvasUI } from './libs/CanvasUI.js';
 import { GazeController } from './libs/GazeController.js'
 import { XRControllerModelFactory } from './libs/three/jsm/XRControllerModelFactory.js';
-function createDarvekaTexture() {
-    const size = 256;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-
-    // Yellow background
-    ctx.fillStyle = '#00ff00';
-    ctx.fillRect(0, 0, size, size);
-
-    // Black text
-    ctx.fillStyle = '#000';
-    ctx.font = 'bold 28px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('darveka was here', size / 2, size / 2);
-
-    return new THREE.CanvasTexture(canvas);
-}
-
-const darvekaTexture = createDarvekaTexture();
 class App{
 	constructor(){
 		const container = document.createElement( 'div' );
@@ -113,7 +91,7 @@ class App{
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
 	loadCollege(){
-        
+        const spongebobTexture = new THREE.TextureLoader().load('./assets/spongebob.jpg');
 		const loader = new GLTFLoader( ).setPath(this.assetsPath);
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath( './libs/three/js/draco/' );
@@ -134,7 +112,8 @@ class App{
     if (child.isMesh){
         console.log(child.name);
 	    if (child.name === "BoltonCollege_SecretWall") {
-            child.material.map = darvekaTexture;
+	    child.material.color.set(0xffffff); // Ensure the texture is not tinted
+            child.material.map = spongebobTexture;
             child.material.needsUpdate = true;
         }
         if (child.name.indexOf("PROXY")!=-1){
