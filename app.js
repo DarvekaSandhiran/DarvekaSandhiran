@@ -91,7 +91,49 @@ class App{
         this.camera.updateProjectionMatrix();
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
-    
+    function createSpongeBobTexture() {
+    const size = 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+
+    // Yellow background
+    ctx.fillStyle = '#ffe135';
+    ctx.fillRect(0, 0, size, size);
+
+    // Eyes
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(size * 0.35, size * 0.4, size * 0.12, 0, Math.PI * 2);
+    ctx.arc(size * 0.65, size * 0.4, size * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Pupils
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(size * 0.35, size * 0.4, size * 0.05, 0, Math.PI * 2);
+    ctx.arc(size * 0.65, size * 0.4, size * 0.05, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Mouth
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(size * 0.5, size * 0.6, size * 0.15, 0, Math.PI, false);
+    ctx.stroke();
+
+    // Cheeks
+    ctx.fillStyle = '#ff8888';
+    ctx.beginPath();
+    ctx.arc(size * 0.28, size * 0.55, size * 0.04, 0, Math.PI * 2);
+    ctx.arc(size * 0.72, size * 0.55, size * 0.04, 0, Math.PI * 2);
+    ctx.fill();
+
+    return new THREE.CanvasTexture(canvas);
+}
+
+const spongebobTexture = createSpongeBobTexture();
 	loadCollege(){
         
 		const loader = new GLTFLoader( ).setPath(this.assetsPath);
@@ -113,6 +155,10 @@ class App{
 				college.traverse(function (child) {
     if (child.isMesh){
         console.log(child.name);
+	    if (child.name === "BoltonCollege_SecretWall") {
+            child.material.map = spongebobTexture;
+            child.material.needsUpdate = true;
+        }
         if (child.name.indexOf("PROXY")!=-1){
             child.material.visible = false;
             self.proxy = child;
