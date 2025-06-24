@@ -78,7 +78,7 @@ class App{
         pmremGenerator.dispose();
 
         self.scene.environment = envMap;
-        self.scene.background = envMap; // <-- Add this line
+        self.scene.background = texture; // <-- Add this line
 
         console.log('HDRI environment set:', texture);
     }, undefined, (err)=>{
