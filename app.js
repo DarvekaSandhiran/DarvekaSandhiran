@@ -70,15 +70,17 @@ class App{
     const loader = new RGBELoader().setDataType( THREE.UnsignedByteType );
     const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
     pmremGenerator.compileEquirectangularShader();
-    
+
     const self = this;
-    
+
     loader.load( './assets/hdr/klippad_sunrise_2_1k.hdr', ( texture ) => {
         const envMap = pmremGenerator.fromEquirectangular( texture ).texture;
         pmremGenerator.dispose();
 
         self.scene.environment = envMap;
+        self.scene.background = envMap; // <-- Add this line
 
+        console.log('HDRI environment set:', texture);
     }, undefined, (err)=>{
         console.error( 'An error occurred setting the environment');
     } );
