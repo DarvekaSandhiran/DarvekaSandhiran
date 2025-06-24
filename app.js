@@ -8,7 +8,49 @@ import { VRButton } from './libs/VRButton.js';
 import { CanvasUI } from './libs/CanvasUI.js';
 import { GazeController } from './libs/GazeController.js'
 import { XRControllerModelFactory } from './libs/three/jsm/XRControllerModelFactory.js';
+function createSpongeBobTexture() {
+    const size = 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
 
+    // Yellow background
+    ctx.fillStyle = '#ffe135';
+    ctx.fillRect(0, 0, size, size);
+
+    // Eyes
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(size * 0.35, size * 0.4, size * 0.12, 0, Math.PI * 2);
+    ctx.arc(size * 0.65, size * 0.4, size * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Pupils
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.arc(size * 0.35, size * 0.4, size * 0.05, 0, Math.PI * 2);
+    ctx.arc(size * 0.65, size * 0.4, size * 0.05, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Mouth
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(size * 0.5, size * 0.6, size * 0.15, 0, Math.PI, false);
+    ctx.stroke();
+
+    // Cheeks
+    ctx.fillStyle = '#ff8888';
+    ctx.beginPath();
+    ctx.arc(size * 0.28, size * 0.55, size * 0.04, 0, Math.PI * 2);
+    ctx.arc(size * 0.72, size * 0.55, size * 0.04, 0, Math.PI * 2);
+    ctx.fill();
+
+    return new THREE.CanvasTexture(canvas);
+}
+
+const spongebobTexture = createSpongeBobTexture();
 class App{
 	constructor(){
 		const container = document.createElement( 'div' );
@@ -91,49 +133,6 @@ class App{
         this.camera.updateProjectionMatrix();
         this.renderer.setSize( window.innerWidth, window.innerHeight );  
     }
-    function createSpongeBobTexture() {
-    const size = 256;
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-
-    // Yellow background
-    ctx.fillStyle = '#ffe135';
-    ctx.fillRect(0, 0, size, size);
-
-    // Eyes
-    ctx.fillStyle = '#fff';
-    ctx.beginPath();
-    ctx.arc(size * 0.35, size * 0.4, size * 0.12, 0, Math.PI * 2);
-    ctx.arc(size * 0.65, size * 0.4, size * 0.12, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Pupils
-    ctx.fillStyle = '#000';
-    ctx.beginPath();
-    ctx.arc(size * 0.35, size * 0.4, size * 0.05, 0, Math.PI * 2);
-    ctx.arc(size * 0.65, size * 0.4, size * 0.05, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Mouth
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(size * 0.5, size * 0.6, size * 0.15, 0, Math.PI, false);
-    ctx.stroke();
-
-    // Cheeks
-    ctx.fillStyle = '#ff8888';
-    ctx.beginPath();
-    ctx.arc(size * 0.28, size * 0.55, size * 0.04, 0, Math.PI * 2);
-    ctx.arc(size * 0.72, size * 0.55, size * 0.04, 0, Math.PI * 2);
-    ctx.fill();
-
-    return new THREE.CanvasTexture(canvas);
-}
-
-const spongebobTexture = createSpongeBobTexture();
 	loadCollege(){
         
 		const loader = new GLTFLoader( ).setPath(this.assetsPath);
